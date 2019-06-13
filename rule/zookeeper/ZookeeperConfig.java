@@ -65,10 +65,7 @@ public class ZookeeperConfig {
         return zkClient;
     }
 
-    @Bean
-    public FlowRuleZookeeperProvider flowRuleZookeeperProvider() {
-        return new FlowRuleZookeeperProvider();
-    }
+
 
 
 

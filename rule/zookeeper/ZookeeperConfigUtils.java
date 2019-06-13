@@ -13,6 +13,9 @@ public class ZookeeperConfigUtils {
 
     private static final String FLOW_RULE_DATA_ID_POSTFIX = "-flow-rules";
 
+    private static final String SERVER_ID_PREFIX = "server-id-";
+
+
     /**
      *
      * @param app name
@@ -20,6 +23,15 @@ public class ZookeeperConfigUtils {
      */
     public static String getFlowRuleZkPath(String app){
         return File.separator + GROUP_ID + File.separator + app + FLOW_RULE_DATA_ID_POSTFIX;
+    }
+
+    /**
+     *
+     * @param serverId
+     * @return SENTINEL_GROUP serverId path
+     */
+    public static String getServerIdZkPath(int serverId){
+        return File.separator + GROUP_ID + File.separator + SERVER_ID_PREFIX + serverId ;
     }
 
 }
