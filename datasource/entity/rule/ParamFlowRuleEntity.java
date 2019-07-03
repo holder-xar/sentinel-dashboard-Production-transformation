@@ -15,15 +15,14 @@
  */
 package com.alibaba.csp.sentinel.dashboard.datasource.entity.rule;
 
-import java.util.List;
-
 import com.alibaba.csp.sentinel.slots.block.Rule;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowClusterConfig;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowItem;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowRule;
 import com.alibaba.csp.sentinel.util.AssertUtil;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 
 /**
  * @author Eric Zhao
@@ -89,5 +88,16 @@ public class ParamFlowRuleEntity extends AbstractRuleEntity<ParamFlowRule> {
     @Override
     public Rule toRule() {
         return rule;
+    }
+
+    @Override
+    public String toString() {
+        return "ParamFlowRuleEntity{" +
+                "id=" + id +
+                ", app='" + app + '\'' +
+                ", ip='" + ip + '\'' +
+                ", port=" + port +
+                ", rule=" + rule +
+                '}';
     }
 }

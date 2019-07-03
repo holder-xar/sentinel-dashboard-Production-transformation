@@ -26,6 +26,8 @@ public class GenerateRuleIdUtils {
 
     private static IdWorker idWorker;
 
+    private static final int MAX_SERVER_NUM = 999;
+
     @Autowired
     private CuratorFramework zkClient;
 
@@ -36,13 +38,12 @@ public class GenerateRuleIdUtils {
          * 功能描述: 连接zookeeper中心，获取服务器id
          * CreateMode.EPHEMERAL 临时节点，session结束时销毁
          */
-        for (int i = 1; i < 999; i++) {
+        for (int i = 1; i < MAX_SERVER_NUM; i++) {
 
             String path = ZookeeperConfigUtils.getServerIdZkPath(i);
             Stat stat = null;
             try {
                 stat = zkClient.checkExists().forPath(path);
-
                 if (null != stat) {
                     continue;
                 }
