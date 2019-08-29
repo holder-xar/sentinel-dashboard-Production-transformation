@@ -22,6 +22,7 @@ import com.alibaba.csp.sentinel.dashboard.client.CommandNotFoundException;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.SentinelVersion;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
+import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.RuleRepository;
 import com.alibaba.csp.sentinel.dashboard.rule.DynamicRuleProvider;
@@ -152,7 +153,7 @@ public class ParamFlowRuleControllerV2 {
         entity.setGmtModified(date);
         try {
             entity = repository.save(entity);
-            publishRules(entity.getApp());
+            publishRules(entity.getApp(),entity.getIp(),entity.getPort());
             return Result.ofSuccess(entity);
         } catch (ExecutionException ex) {
             logger.error("Error when adding new parameter flow rules", ex.getCause());
@@ -224,7 +225,7 @@ public class ParamFlowRuleControllerV2 {
         entity.setGmtModified(date);
         try {
             entity = repository.save(entity);
-            publishRules(entity.getApp());
+            publishRules(entity.getApp(),entity.getIp(),entity.getPort());
             return Result.ofSuccess(entity);
         } catch (ExecutionException ex) {
             logger.error("Error when updating parameter flow rules, id=" + id, ex.getCause());
@@ -252,7 +253,7 @@ public class ParamFlowRuleControllerV2 {
         authUser.authTarget(oldEntity.getApp(), PrivilegeType.DELETE_RULE);
         try {
             repository.delete(id);
-            publishRules(oldEntity.getApp());
+            publishRules(oldEntity.getApp(),oldEntity.getIp(),oldEntity.getPort());
             return Result.ofSuccess(id);
         } catch (ExecutionException ex) {
             logger.error("Error when deleting parameter flow rules", ex.getCause());
@@ -267,8 +268,8 @@ public class ParamFlowRuleControllerV2 {
         }
     }
 
-    private void publishRules(String app) throws Exception {
-        List<ParamFlowRuleEntity> rules = repository.findAllByApp(app);
+    private void publishRules(String app, String ip, Integer port) throws Exception {
+        List<ParamFlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app,ip,port));
         publisher.publish(app,rules);
     }
 
